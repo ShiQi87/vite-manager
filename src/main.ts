@@ -1,0 +1,20 @@
+import { createApp } from 'vue';
+import App from './App.vue';
+//引入element-plus
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+import zhCN from 'element-plus/dist/locale/zh-cn';
+import router from './router';
+import '@/style/index.scss'
+
+//创建应用实例
+const app = createApp(App);
+//安装插件
+app.use(ElementPlus, {
+  locale: zhCN,
+});
+
+//挂载实例到app上
+app.use(router);
+
+app.mount('#app');
