@@ -1,15 +1,15 @@
-export type LoginForm = {//type定义类型只能定义一次，interface定义类型多次定义会合二为一
+export type loginForm = {//type定义类型只能定义一次，interface定义类型多次定义会合二为一
   username: string,
   password: string,
 }
 
-type Datatype = {
+type datatype = {
   token: string,
 }
 
-export type LoginResponseData = {
+export type loginResponseData = {
   code: number,
-  data: Datatype,
+  data: datatype,
 }
 
 type user = {
@@ -27,7 +27,7 @@ type userInfo = {
   routes: string[],
   token: string,
 }
-export type UserResponseData = {
+export type userResponseData = {
   code: number;
   data: user;
 }
@@ -38,6 +38,6 @@ enum API {  //配置文件中配置自动添加/api前缀
 
 import request from "@/utils/request"
 //登录接口
-export const reqLogin = (data: LoginForm) => request.post<any, LoginResponseData>(API.LOGIN_URL, data);
+export const reqLogin = (data: loginForm) => request.post<any, loginResponseData>(API.LOGIN_URL, data);
 //用户接口
-export const reqUserInfo = () => request.get<UserResponseData>(API.USERINFO_URL);
+export const reqUserInfo = () => request.get<userResponseData>(API.USERINFO_URL);

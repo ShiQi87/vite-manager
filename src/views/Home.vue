@@ -1,8 +1,11 @@
 <script setup lang='ts'>
+import { RouterLink } from 'vue-router';
 </script>
 
 <template>
-  <div>主页</div>
+  <router-link to="/Login">
+    <button>aaa</button>
+  </router-link>
 </template>
 
 <style lang='scss' scoped>

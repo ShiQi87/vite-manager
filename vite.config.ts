@@ -20,7 +20,7 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
     ],
       resolve: {
       alias: {
-        "@": path.resolve('./src')//给src配置别名。@
+        "@": path.resolve(__dirname, './src')//给src配置别名。@
       },
     },
     //sass全局变量配置

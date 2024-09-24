@@ -6,6 +6,7 @@ import 'element-plus/dist/index.css';
 import zhCN from 'element-plus/dist/locale/zh-cn';
 import router from './router';
 import '@/style/index.scss'
+import pinia from './store';
 
 //创建应用实例
 const app = createApp(App);
@@ -16,5 +17,6 @@ app.use(ElementPlus, {
 
 //挂载实例到app上
 app.use(router);
+app.use(pinia)
 
 app.mount('#app');
