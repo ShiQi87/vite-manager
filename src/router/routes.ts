@@ -10,8 +10,8 @@ const constantRoute =
   {
     //主页路由
     path: '/',
-    component: () => import('@/views/Home.vue'),
-    name: 'home'
+    component: () => import('@/views/Layout.vue'),
+    name: 'layout'
   },
   {
     //错误路由

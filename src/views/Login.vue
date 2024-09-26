@@ -3,13 +3,13 @@
     <el-row>
       <el-col :span="12" :xs="0"/>
       <el-col :span="12" :xs="24"> 
-        <el-form class="login_form">
+        <el-form class="login_form" :model="logInfo" :rules ref="logInfoRef">
           <h1>欢迎</h1>
           <h2>前端平台</h2>
-          <el-form-item>
+          <el-form-item prop='username'>
             <el-input :prefix-icon="User" v-model="logInfo.username"/>
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input type="password" :prefix-icon="Lock" v-model="logInfo.password" show-password/>
           </el-form-item>
           <el-form-item>
@@ -27,28 +27,46 @@ import { User, Lock } from '@element-plus/icons-vue';
 import { reactive, ref } from 'vue';
 import useUserStore from '@/store/module/user';
 import { useRouter } from 'vue-router';
+import { getNowTime } from '@/utils/gettime';
 //收集账号和密码
 let logInfo = reactive({ username: 'admin', password: '111111' });
 let loading = ref(false);
+let logInfoRef = ref();
 
 let useStore = useUserStore();
 let router = useRouter();
 
-const login = () => {
+//登录，调用登录接口
+const login = async () => {
+  await logInfoRef.value.validate();
   loading.value = true;
-  useStore.userLogin(logInfo).then((result) => {
-    router.push('/')
+  useStore.userLogin(logInfo).then(() => {
+    router.push('/');
     ElNotification({
       type: 'success',
-      message: result
-    })
+      message: '欢迎回来',
+      title: 'HI,' + getNowTime() + '好'
+    });
   }, (reason) => {
     loading.value = false;
     ElNotification({
       type: 'error',
       message: (reason as Error).message//断言reason类型，若为Error则输出，这是ts的功能
-    })
+    });
   });
+}
+
+const validatorUserName = (rule: any, value: any, callback: any) => {
+  if (/^.{5,10}$/.test(value)) {
+    callback();
+  } else {
+    callback(new Error('账号长度至少五位,最多十位'));
+  }
+}
+
+const rules = {
+  username: [{ trigger: 'change', validator: validatorUserName }],
+  password: [{required: true, min: 5, max: 10, message: '密码至少五位', trigger: 'change'}]
 }
 
 </script>
@@ -81,8 +99,5 @@ const login = () => {
     width: 100%;
   }
 }
-
-
- 
 </style>
 

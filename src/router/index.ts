@@ -4,7 +4,7 @@ import routes from './routes'
 // import Login from "@/views/Login.vue";
 let router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: (routes as any),
   //滚动行为
   scrollBehavior() {
     return {
