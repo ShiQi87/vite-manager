@@ -7,6 +7,8 @@ import zhCN from 'element-plus/dist/locale/zh-cn';
 import router from './router';
 import '@/style/index.scss'
 import pinia from './store';
+//引入全局组件
+import globalComponents from '@/components/index';
 
 //创建应用实例
 const app = createApp(App);
@@ -14,9 +16,11 @@ const app = createApp(App);
 app.use(ElementPlus, {
   locale: zhCN,
 });
+//使用全局组件
+app.use(globalComponents);
+app.use(router);
+app.use(pinia);
 
 //挂载实例到app上
-app.use(router);
-app.use(pinia)
 
 app.mount('#app');

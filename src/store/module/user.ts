@@ -1,12 +1,15 @@
 //user仓库
 import { defineStore } from "pinia";
 import { reqLogin } from "@/api/user";
-import type { LoginForm, LoginResponseData } from '@/api/user'
+import type { LoginForm, LoginResponseData } from '@/api/user';
+import { constantRoute } from "@/router/routes";
+import type { UserState } from "../type";
 
 let useUserStore = defineStore( 'User',{
-  state: () => {
+  state():UserState {
     return {
       token: localStorage.getItem("TOKEN"),
+      menuRoutes: constantRoute,
     }
   },//选项式写法，相当于vue2的data
   actions: {

@@ -1,10 +1,10 @@
 //路由创建
-import { createRouter, createWebHistory } from "vue-router";
-import routes from './routes'
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { constantRoute } from './routes'
 // import Login from "@/views/Login.vue";
 let router = createRouter({
   history: createWebHistory(),
-  routes: (routes as any),
+  routes: (constantRoute as RouteRecordRaw[]),
   //滚动行为
   scrollBehavior() {
     return {
