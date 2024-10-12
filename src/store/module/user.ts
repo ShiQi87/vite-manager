@@ -1,15 +1,19 @@
 //user仓库
 import { defineStore } from "pinia";
-import { reqLogin } from "@/api/user";
+import { reqLogin, reqUserInfo } from "@/api/user";
 import type { LoginForm, LoginResponseData } from '@/api/user';
 import { constantRoute } from "@/router/routes";
 import type { UserState } from "../type";
+import { UserResponseData } from "@/api/user";
 
 let useUserStore = defineStore( 'User',{
   state():UserState {
     return {
       token: localStorage.getItem("TOKEN"),
       menuRoutes: constantRoute,
+      username: '',
+      avatar: '',
+      buttons: []
     }
   },//选项式写法，相当于vue2的data
   actions: {
@@ -21,10 +25,19 @@ let useUserStore = defineStore( 'User',{
         this.token = result.data.token;
         localStorage.setItem("TOKEN", this.token);
       } else {
-        console.log(result);
         return Promise.reject(new Error(result.data.message));
       }
-    }//返回promise，所以用异步
+    },//返回promise，所以用异步
+    async userInfo() {
+      let result: UserResponseData = await reqUserInfo();
+      if (result.code == 200) {
+        this.username = result.data.checkUser.username;
+        this.avatar = result.data.checkUser.avatar;
+        this.buttons = result.data.checkUser.buttons;
+      } else {
+        return Promise.reject(new Error(result.data.message))
+      }
+    }
   },//相当于methods
   getters: {
 

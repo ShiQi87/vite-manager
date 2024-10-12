@@ -15,9 +15,10 @@ export type LoginResponseData = {
 
 type User = {
   checkUser: UserInfo;
+  message?: string
 }
 
-type UserInfo = {
+export type UserInfo = {
   userId: number,
   avatar:string,
   username: string,
@@ -26,7 +27,7 @@ type UserInfo = {
   roles: string[],
   buttons: string[],
   routes: string[],
-  token: string,
+  token: string
 }
 export type UserResponseData = {
   code: number;
@@ -41,4 +42,4 @@ import request from "@/utils/request"
 //登录接口
 export const reqLogin = (data: LoginForm) => request.post<any, LoginResponseData>(API.LOGIN_URL, data);
 //用户接口
-export const reqUserInfo = () => request.get<UserResponseData>(API.USERINFO_URL);
+export const reqUserInfo = () => request.get<any, UserResponseData>(API.USERINFO_URL);

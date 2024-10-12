@@ -1,14 +1,14 @@
 <script setup lang='ts'>
-import useBreadcrumbStore from '@/store/module/breadcrumb';
+import useTopbarStore from '@/store/module/topbar';
 
-let breadcrumbStore = useBreadcrumbStore();
+let topbarStore = useTopbarStore();
 
 </script>
 
 <template>
   <div class="logo">
     <img src="/logo.png" alt="Logo">
-    <p :hidden="breadcrumbStore.fold">一个前端平台</p>
+    <p :hidden="topbarStore.fold">一个前端平台</p>
   </div>
 </template>
 

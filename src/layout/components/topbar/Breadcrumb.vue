@@ -1,18 +1,17 @@
 <script setup lang='ts'>
-import useBreadcrumbStore from '@/store/module/breadcrumb';
+import useTopbarStore from '@/store/module/topbar';
 import { useRoute } from 'vue-router';
 
-let breadcrumbStore = useBreadcrumbStore(); 
+let topbarStore = useTopbarStore(); 
 let $route = useRoute();
-console.log($route);
 const changeIcon = () => {
-  breadcrumbStore.fold = !breadcrumbStore.fold;
+  topbarStore.fold = !topbarStore.fold;
 }
 </script>
 
 <template>
   <el-icon class="fold" @click="changeIcon">
-    <component :is="breadcrumbStore.fold ? 'Fold' : 'Expand'">
+    <component :is="topbarStore.fold ? 'Fold' : 'Expand'">
     </component>
   </el-icon>
   <!-- 面包屑 -->

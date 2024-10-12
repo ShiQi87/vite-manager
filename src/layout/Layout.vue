@@ -2,31 +2,32 @@
 import Logo from '@/layout/components/Logo.vue';
 import { ElScrollbar, ElMenu } from 'element-plus';
 import MyMenu from '@/layout/components/MyMenu.vue';
-import { RouterView, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import useUserStore from '@/store/module/user';
 import Topbar from '@/layout/components/topbar/index.vue';
-import useBreadcrumbStore from '@/store/module/breadcrumb';
+import useTopbarStore from '@/store/module/topbar';
+import MyMain from '@/layout/components/MyMain.vue'
 
 const $route = useRoute();
 let userStore = useUserStore();
-let breadcrumbStore = useBreadcrumbStore();
+let topbarStore = useTopbarStore();
 </script>
 
 <template>
   <div class="layout_container">
-    <div class="layout_sidebar" :class="{ fold: breadcrumbStore.fold }">
+    <div class="layout_sidebar" :class="{ fold: topbarStore.fold }">
       <logo />
       <el-scrollbar class="scrollbar">
-        <el-menu :collapse="breadcrumbStore.fold" :defaultActive="$route.path" background-color="#001529" text-color="white">
+        <el-menu :collapse="topbarStore.fold" :defaultActive="$route.path" background-color="#001529" text-color="white">
           <my-menu :menuList="userStore.menuRoutes"  />
         </el-menu>   
       </el-scrollbar>
     </div>
-    <div class="layout_topbar":class="{ fold: breadcrumbStore.fold }">
+    <div class="layout_topbar":class="{ fold: topbarStore.fold }">
       <topbar></topbar>
     </div>
-    <div class="layout_main" :class="{ fold: breadcrumbStore.fold }">
-      <router-view></router-view>
+    <div class="layout_main" :class="{ fold: topbarStore.fold }">
+      <my-main />
     </div>
   </div>
 </template>

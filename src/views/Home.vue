@@ -1,11 +1,13 @@
 <script setup lang='ts'>
-import { RouterLink } from 'vue-router';
+import { onMounted } from 'vue';
+import useUserStore from '@/store/module/user';
+let userStore = useUserStore();
+onMounted(() => {
+  userStore.userInfo();
+});
 </script>
 
 <template>
-  <router-link to="/Login">
-    <button>aaa</button>
-  </router-link>
 </template>
 
 <style lang='scss' scoped>

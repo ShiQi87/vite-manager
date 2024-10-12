@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 
-let useBreadcrumbStore = defineStore('Breadcrumb', {
+let useTopbarStore = defineStore('Topbar', {
   state() {
     return {
       fold: false,
+      refresh: false
     }
   }
 });
 
-export default useBreadcrumbStore;
+export default useTopbarStore;

@@ -1,16 +1,33 @@
 <script setup lang='ts'>
+import useTopbarStore from '@/store/module/topbar';
+import useUserStore from '@/store/module/user';
+
+const topbarStore = useTopbarStore();
+const userStore = useUserStore();
+const refresh = () => {
+  topbarStore.refresh = !topbarStore.refresh;
+}
+
+const changeFullScreen = () => {
+  let full = document.fullscreenElement;
+  if (!full) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
 </script>
 
 <template>
   <div class="topbar_right">
-    <el-button size="small" icon="Refresh" :circle="true"></el-button>
-    <el-button size="small" icon="FullScreen" :circle="true"></el-button>
+    <el-button size="small" icon="Refresh" :circle="true" @click="refresh"></el-button>
+    <el-button size="small" icon="FullScreen" :circle="true" @click="changeFullScreen"></el-button>
     <el-button size="small" icon="Setting" :circle="true"></el-button>
-    <img src="/logo.png" alt="" class="tou">
+    <img :src="userStore.avatar" alt="" class="tou">
     <!-- 下拉菜单 -->
       <el-dropdown>
         <span class="el-dropdown-link">
-          admin
+          {{ userStore.username }}
           <el-icon class="el-icon--right">
             <arrow-down />
           </el-icon>
@@ -29,6 +46,7 @@
   width: 24px;
   height: 24px;
   margin: 0 10px;
+  border-radius: 50%;
 } 
 .el-icon--right {
   margin-right: 20px;
