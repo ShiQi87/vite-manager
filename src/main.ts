@@ -21,6 +21,6 @@ app.use(globalComponents);
 app.use(router);
 app.use(pinia);
 
+import '@/permission'
 //挂载实例到app上
-
 app.mount('#app');

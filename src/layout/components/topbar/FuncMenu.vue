@@ -1,9 +1,14 @@
 <script setup lang='ts'>
 import useTopbarStore from '@/store/module/topbar';
 import useUserStore from '@/store/module/user';
+import * as path from 'path';
+import { useRouter, useRoute } from 'vue-router';
 
 const topbarStore = useTopbarStore();
 const userStore = useUserStore();
+const $router = useRouter()
+const $route = useRoute()
+
 const refresh = () => {
   topbarStore.refresh = !topbarStore.refresh;
 }
@@ -16,6 +21,10 @@ const changeFullScreen = () => {
     document.exitFullscreen();
   }
 }
+const logout = async () => {
+  await userStore.userLogout();
+  $router.push({ path: '/login', query:{ redirect: $route.path } });
+}
 </script>
 
 <template>
@@ -23,7 +32,7 @@ const changeFullScreen = () => {
     <el-button size="small" icon="Refresh" :circle="true" @click="refresh"></el-button>
     <el-button size="small" icon="FullScreen" :circle="true" @click="changeFullScreen"></el-button>
     <el-button size="small" icon="Setting" :circle="true"></el-button>
-    <img :src="userStore.avatar" alt="" class="tou">
+    <img :src="userStore.avatar" class="tou">
     <!-- 下拉菜单 -->
       <el-dropdown>
         <span class="el-dropdown-link">
@@ -34,7 +43,7 @@ const changeFullScreen = () => {
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>

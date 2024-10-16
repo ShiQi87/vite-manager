@@ -1,7 +1,6 @@
 //路由创建
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { constantRoute } from './routes'
-// import Login from "@/views/Login.vue";
 let router = createRouter({
   history: createWebHistory(),
   routes: (constantRoute as RouteRecordRaw[]),
@@ -12,6 +11,5 @@ let router = createRouter({
       top: 0
     }
   }
-}
-);
+});
 export default router;

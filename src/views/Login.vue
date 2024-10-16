@@ -26,22 +26,26 @@ import { ElForm, ElRow, ElCol, ElFormItem, ElInput, ElButton, ElNotification } f
 import { User, Lock } from '@element-plus/icons-vue';
 import { reactive, ref } from 'vue';
 import useUserStore from '@/store/module/user';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { getNowTime } from '@/utils/gettime';
 //收集账号和密码
 let logInfo = reactive({ username: 'admin', password: '111111' });
 let loading = ref(false);
 let logInfoRef = ref();
 
-let useStore = useUserStore();
+let userStore = useUserStore();
 let router = useRouter();
+let $route = useRoute();
 
 //登录，调用登录接口
 const login = async () => {
   await logInfoRef.value.validate();
   loading.value = true;
-  useStore.userLogin(logInfo).then(() => {
-    router.push('/');
+  userStore.userLogin(logInfo).then(() => 
+    userStore.userInfo()
+  ).then(() => {
+    let redirect: any = $route.query.redirect;
+    router.push({ path: redirect || '/' });
     ElNotification({
       type: 'success',
       message: '欢迎回来',

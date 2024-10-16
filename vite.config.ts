@@ -1,4 +1,4 @@
-import { UserConfigExport, ConfigEnv } from 'vite';
+import { UserConfigExport, ConfigEnv, loadEnv } from 'vite';
 import { viteMockServe } from 'vite-plugin-mock';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
@@ -6,7 +6,8 @@ import path from 'path';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 // https://vitejs.dev/config/
-export default ({ command }: ConfigEnv): UserConfigExport => {
+export default ({ command, mode }: ConfigEnv): UserConfigExport => {
+  let env = loadEnv(mode, process.cwd());
   return {
     plugins: [
       vue(),
@@ -32,5 +33,13 @@ export default ({ command }: ConfigEnv): UserConfigExport => {
         },
       },
     },
+    //配置代理跨域
+    server: {
+      proxy: {
+        [env.VITE_APP_BASE_API]: {
+          
+        }
+      }
+    }
   }
 }

@@ -51,6 +51,13 @@ export default [
             return { code: 200, data: { token } }
         },
     },
+    {
+        url: '/api/user/logout',//请求地址
+        method: 'post',//请求方式
+        response: ({ body }) => {
+            return { code: 200}
+        },
+    },
     // 获取用户信息
     {
         url: '/api/user/info',

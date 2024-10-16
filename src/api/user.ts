@@ -34,8 +34,9 @@ export type UserResponseData = {
   data: User;
 }
 enum API {  //配置文件中配置自动添加/api前缀
-  LOGIN_URL = "/user/login",
-  USERINFO_URL = "/user/info"
+  LOGIN_URL = "/admin/acl/index/login",
+  USERINFO_URL = "/admin/acl/index/info",
+  LOGOUT_URL = "/admin/acl/index/logout"
 }
 
 import request from "@/utils/request"
@@ -43,3 +44,5 @@ import request from "@/utils/request"
 export const reqLogin = (data: LoginForm) => request.post<any, LoginResponseData>(API.LOGIN_URL, data);
 //用户接口
 export const reqUserInfo = () => request.get<any, UserResponseData>(API.USERINFO_URL);
+
+export const reqLogout = () => request.post<any, any>(API.LOGOUT_URL);
