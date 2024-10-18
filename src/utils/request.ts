@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus';
 import useUserStore from '@/store/module/user';
 //用create创建新的axios实例，在这个实例上封装自己的方法
 let request = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API,
+  baseURL: import.meta.env.VITE_APP_BASE_API,//在这里配置请求的默认开头,此处是api
   timeout: 5000,
 });
 //添加请求和响应拦截器

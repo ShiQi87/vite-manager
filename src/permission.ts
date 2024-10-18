@@ -23,10 +23,17 @@ router.beforeEach(async (to, from, next) => {
           await userStore.userInfo();//缺少信息获取信息
           next();
         } catch {
-          userStore.userLogout();
+          await userStore.userLogout();
           next({ path: '/login', query: { redirect: to.path } });
         }
       }
+    }
+  } else {
+    //用户未登录判断
+    if (to.path == '/login') {
+      next()
+    } else {
+      next({ path: '/login', query: { redirect: to.path } })
     }
   }
 });

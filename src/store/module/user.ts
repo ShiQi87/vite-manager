@@ -1,10 +1,10 @@
 //user仓库
 import { defineStore } from "pinia";
 import { reqLogin, reqLogout, reqUserInfo } from "@/api/user";
-import type { LoginForm, LoginResponseData } from '@/api/user';
+import type { LoginForm, LoginResponseData, UserResponseData } from '@/api/user';
 import { constantRoute } from "@/router/routes";
 import type { UserState } from "../type";
-import { UserResponseData } from "@/api/user";
+import { UserInfo } from "@/api/user";
 
 let useUserStore = defineStore('User', {
   state(): UserState {
@@ -22,25 +22,25 @@ let useUserStore = defineStore('User', {
       //成功返回200和token
       //失败返回201，给出失败信息
       if (result.code === 200) {
-        this.token = result.data.token;
+        this.token = result.data;
         localStorage.setItem("TOKEN", this.token);
       } else {
-        return Promise.reject(new Error(result.data.message));
+        return Promise.reject(new Error(result.message));
       }
     },//返回promise，所以用异步
     async userInfo() {
-      let result: UserResponseData = await reqUserInfo();
+      let result: UserInfo = await reqUserInfo();
       if (result.code == 200) {
-        this.username = result.data.checkUser.username;
-        this.avatar = result.data.checkUser.avatar;
-        this.buttons = result.data.checkUser.buttons;
+        this.username = result.data.name;
+        this.avatar = result.data.avatar;
+        this.buttons = result.data.buttons;
         return 'ok';
       } else {
-        return Promise.reject(new Error(result.data.message))
+        return Promise.reject(new Error(result.message))
       }
     },
     async userLogout() {
-      let result = await reqLogout();
+      let result: UserResponseData = await reqLogout();
       if (result.code == 200) {
         this.username = '';
         this.avatar = '';
@@ -48,7 +48,7 @@ let useUserStore = defineStore('User', {
         localStorage.removeItem('TOKEN');
         return 'ok';
       } else {
-        return Promise.reject(new Error(result.data.message));
+        return Promise.reject(new Error(result.message));
       }
     }
   },//相当于methods

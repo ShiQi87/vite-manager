@@ -19,7 +19,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         enable: command === 'serve',
       }),
     ],
-      resolve: {
+    resolve: {
       alias: {
         "@": path.resolve(__dirname, './src')//给src配置别名。@
       },
@@ -37,7 +37,9 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     server: {
       proxy: {
         [env.VITE_APP_BASE_API]: {
-          
+          target: env.VITE_SERVE,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/,'')//请求地址并没有api但是配置里面写了默认api开头，所以要重写
         }
       }
     }

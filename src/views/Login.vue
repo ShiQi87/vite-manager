@@ -41,9 +41,7 @@ let $route = useRoute();
 const login = async () => {
   await logInfoRef.value.validate();
   loading.value = true;
-  userStore.userLogin(logInfo).then(() => 
-    userStore.userInfo()
-  ).then(() => {
+  userStore.userLogin(logInfo).then(() => {
     let redirect: any = $route.query.redirect;
     router.push({ path: redirect || '/' });
     ElNotification({

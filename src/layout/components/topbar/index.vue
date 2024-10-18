@@ -20,7 +20,6 @@ import FuncMenu from './FuncMenu.vue';
   width: 100%;
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid black;
   .topbar_left {
     display: flex;
     align-items: center;
