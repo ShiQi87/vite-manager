@@ -1,27 +1,24 @@
-import { ResponseData } from "@/api/user";
+export type ResponseData = {
+  code: number;
+  message: string;
+  ok: boolean;
+}
 
 export type BrandResponseData = ResponseData & {
-  data: ListData;
+  data: {
+    records: Records;
+    total: number;
+    size: number;
+    current: number;
+    searchCount: boolean;
+    pages: number;
+  }
 }
 
-type ListData = {
-  records: BrandData[];
-  total: number;
-  size: number;
-  current: number;
-  orders: [];
-  optimizeCountSql: boolean;
-  hitCount: boolean;
-  countId: null;
-  maxLimit: null;
-  searchCount: boolean;
-  pages: number;
-}
+export type Records = BrandData[];
 
 export type BrandData = {
-  id: number;
-  createTime: Date;
-  updateTime: Date;
+  id?: number;
   tmName: string;
-  logoUrl: URL;
+  logoUrl: string;
 }

@@ -39,7 +39,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         [env.VITE_APP_BASE_API]: {
           target: env.VITE_SERVE,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/,'')//请求地址并没有api但是配置里面写了默认api开头，所以要重写
+          rewrite: (path) => path.replace(/^\/api/,'')//配置代理只有api开头才代理，默认api开头，转发时也会带api，但是真实地址没有api，所以重写
         }
       }
     }

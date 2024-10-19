@@ -11,7 +11,6 @@ topbarStore.$subscribe((mutation, store) => {
     flag.value = false;
     nextTick(() => {
       flag.value = true;
-      console.log('shuaxin');
     });
   }
 });

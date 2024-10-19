@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 import useTopbarStore from '@/store/module/topbar';
 import useUserStore from '@/store/module/user';
-import * as path from 'path';
 import { useRouter, useRoute } from 'vue-router';
 
 const topbarStore = useTopbarStore();
