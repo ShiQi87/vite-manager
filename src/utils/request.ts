@@ -43,7 +43,6 @@ request.interceptors.response.use(
         break;
     }
 
-
     ElMessage({
       type: 'error',
       message: msg,

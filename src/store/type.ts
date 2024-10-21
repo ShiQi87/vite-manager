@@ -7,3 +7,4 @@ export type UserState = {
   avatar: string | null,
   buttons: string[]
 }
+

@@ -1,24 +1,23 @@
-<script setup lang='ts'>
-import useTopbarStore from '@/store/module/topbar';
+<script setup lang="ts">
+import useTopbarStore from "@/store/module/topbar";
 
 let topbarStore = useTopbarStore();
-
 </script>
 
 <template>
   <div class="logo">
-    <img src="/logo.png" alt="Logo">
+    <img src="/logo.png" alt="Logo" />
     <p :hidden="topbarStore.fold">一个前端平台</p>
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .logo {
   padding: 1vh;
   display: flex;
   justify-content: center;
   height: $base_topbar_height;
-  img { 
+  img {
     height: 5vh;
   }
   p {
@@ -29,5 +28,4 @@ let topbarStore = useTopbarStore();
     color: white;
   }
 }
-
 </style>

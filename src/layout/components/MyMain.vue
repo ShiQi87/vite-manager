@@ -1,7 +1,7 @@
-<script setup lang='ts'>
-import { RouterView } from 'vue-router';
-import { ref, nextTick } from 'vue';
-import useTopbarStore from '@/store/module/topbar';
+<script setup lang="ts">
+import { RouterView } from "vue-router";
+import { ref, nextTick } from "vue";
+import useTopbarStore from "@/store/module/topbar";
 
 let flag = ref(true);
 let topbarStore = useTopbarStore();
@@ -14,15 +14,12 @@ topbarStore.$subscribe((mutation, store) => {
     });
   }
 });
-
 </script>
 
 <template>
-    <router-view v-slot="{ Component }">
-      <component :is="Component" v-if="flag"></component>
-    </router-view>
+  <router-view v-slot="{ Component }">
+    <component :is="Component" v-if="flag"></component>
+  </router-view>
 </template>
 
-<style lang='scss' scoped>
-
-</style>
+<style lang="scss" scoped></style>

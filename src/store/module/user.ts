@@ -1,7 +1,7 @@
 //user仓库
 import { defineStore } from "pinia";
 import { reqLogin, reqLogout, reqUserInfo } from "@/api/user";
-import type { LoginForm, LoginResponseData, UserResponseData } from '@/api/user';
+import type { LoginForm, LoginResponseData, ResponseData } from '@/api/user';
 import { constantRoute } from "@/router/routes";
 import type { UserState } from "../type";
 import { UserInfo } from "@/api/user";
@@ -40,11 +40,12 @@ let useUserStore = defineStore('User', {
       }
     },
     async userLogout() {
-      let result: UserResponseData = await reqLogout();
+      let result: ResponseData = await reqLogout();
       if (result.code == 200) {
         this.username = '';
         this.avatar = '';
         this.buttons = [];
+        this.token = '';
         localStorage.removeItem('TOKEN');
         return 'ok';
       } else {
