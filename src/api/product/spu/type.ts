@@ -1,28 +1,94 @@
+//服务器全部接口返回的数据类型
 type ResponseData = {
-  code: number,
-  ok: boolean,
-  message: string
-}
+  code: number;
+  ok: boolean;
+  message: string;
+};
 
-type SpuResponseData = {
+export type SpuResponseData = ResponseData & {
   data: {
-    records: Records,
-    total: number,
-    size: number,
-    current: number,
-    searchCount: boolean,
-    pages: number
-  }
+    records: Records;
+    total: number;
+    size: number;
+    current: number;
+    searchCount: boolean;
+    pages: number;
+  };
+};
+
+//数组:元素都是已有SPU数据类型
+export type Records = Array<SpuData>;
+
+//SPU数据的ts类型:需要修改
+export type SpuData = {
+  category3Id: string | number;
+  id?: number;
+  spuName: string;
+  tmId: number | string;
+  description: string;
+  spuImageList: null | SpuImg[];
+  spuSaleAttrList: null | SaleAttr[];
+};
+
+export type SaleAttr = {
+  id?: number;
+  createTime?: null;
+  updateTime?: null;
+  spuId?: number;
+  baseSaleAttrId: number | string;
+  saleAttrName: string;
+  spuSaleAttrValueList: SpuSaleAttrValueList;
+  flag?: boolean;
+  saleAttrValue?: string;
+};
+
+export type SpuImg = {
+  id?: number;
+  spuId?: number;
+  imgName?: string;
+  imgUrl?: string;
+  name?: string;
+  url?: string;
+};
+
+//品牌数据的ts类型
+export type Trademark = {
+  id: number;
+  tmName: string;
+  logoUrl: string;
+};
+
+//品牌接口返回的数据类型
+export type AllTrademark = ResponseData & {
+  data: Trademark[];
+};
+
+export type ImageList = ResponseData & {
+  data: SpuImg[];
+};
+
+export type SpuSaleAttrValue = {
+  id?: number;
+  createTime?: null;
+  updateTime?: null;
+  spuId?: number;
+  baseSaleAttrId: number | string;
+  saleAttrValueName: string;
+  saleAttrName?: string;
+  isChecked?: null;
+};
+
+export type SpuSaleAttrValueList = SpuSaleAttrValue[];
+
+export interface SaleAttrResponseData extends ResponseData {
+  data: SaleAttr[];
 }
 
-type Records = Array<SpuData>;
+export type HasSaleAttr = {
+  id: number;
+  name: string;
+};
 
-type SpuData = {
-  category3Id: string | number
-  id?: number
-  spuName: string
-  tmId: number | string
-  description: string
-  spuImageList: null | SpuImg[]
-  spuSaleAttrList: null | SaleAttr[]
+export interface HasSaleAttrResponse extends ResponseData {
+  data: HasSaleAttr[];
 }

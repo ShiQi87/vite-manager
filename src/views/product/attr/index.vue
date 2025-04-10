@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch, nextTick } from "vue";
+import { reactive, ref, watch, nextTick, onBeforeUnmount } from "vue";
 import useCategoryStore from "@/store/module/category";
 import { reqAddOrUpdateAttr, reqAttr, reqDeleteAttr } from "@/api/product/attr";
 import {
@@ -9,7 +9,6 @@ import {
   AttrValue,
 } from "@/api/product/attr/type";
 import { ElMessage } from "element-plus";
-import { title } from "process";
 
 let attrArr = ref<Attrs>();
 let attrParams = reactive<AttrData>({
@@ -148,6 +147,10 @@ const deleteAttr = async (attrId: number) => {
   }
   getAttrArr();
 };
+
+onBeforeUnmount(() => {
+  categoryStore.$reset();
+})
 </script>
 
 <template>

@@ -5,10 +5,10 @@ export interface Response{
 }
 
 export type CategoryResponse = Response & {
-  data: Categorys;
+  data: Categories;
 }
 
-type Categorys = Array<CategoryData>;
+type Categories = Array<CategoryData>;
 
 export type CategoryData = {
   id: number | string,
