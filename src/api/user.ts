@@ -33,6 +33,11 @@ export interface UserInfo  extends ResponseData {
 //   }
 // }
 
+// enum API {  //配置文件中配置自动添加/api前缀
+//   LOGIN_URL = "/user/login",
+//   USERINFO_URL = "/user/info",
+//   LOGOUT_URL = "/user/logout"
+// }
 enum API {  //配置文件中配置自动添加/api前缀
   LOGIN_URL = "/admin/acl/index/login",
   USERINFO_URL = "/admin/acl/index/info",

@@ -3,7 +3,7 @@ import { ElMenuItem, ElSubMenu, ElIcon } from "element-plus";
 import { useRouter } from "vue-router";
 
 let prop = defineProps(["menuList"]);
-const procMenu = prop.menuList.filter((item) => item.meta.hidden === false);
+const procMenu = prop.menuList.filter((item: any) => item.meta.hidden === false);
 
 let $router = useRouter();
 

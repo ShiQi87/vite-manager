@@ -1,8 +1,9 @@
 import { reqCategory01, reqCategory02, reqCategory03 } from "@/api/product/attr";
 import { defineStore } from "pinia";
+import { CategoryState } from "../type";
 
 let useCategoryStore = defineStore('Category', {
-  state: () => {
+  state: (): CategoryState => {
     return {
       c1Id: '',
       c1Attr: [],

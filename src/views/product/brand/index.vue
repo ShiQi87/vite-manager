@@ -111,7 +111,7 @@ const confirm = async () => {
       dialogFormVisible.value = false;
     }
   } catch {
-    (error) => {
+    (error: Error) => {
       ElMessage({
         type: "error",
         message: `${error}`,

@@ -14,8 +14,8 @@ export default {
     let VNode = createVNode(MyProgress);
     render(VNode, document.body);
     app.provide('$progress', {
-      open: VNode.component.exposed.open,
-      close: VNode.component.exposed.close
+      open: VNode.component?.exposed?.open,
+      close: VNode.component?.exposed?.close
     });
   }
 }

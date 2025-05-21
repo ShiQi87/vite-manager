@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import Category from "@/components/Category.vue";
 import { ref, watch } from "vue";
-import { reqHasSpu, reqRemoveSpu } from "@/api/product/spu";
+import { reqHasSpu, reqRemoveSpu, reqSkuList } from "@/api/product/spu";
 import useCategoryStore from "@/store/module/category";
-import { Records, SpuResponseData, SpuData } from "@/api/product/spu/type";
+import {
+  Records,
+  SpuResponseData,
+  SpuData,
+  SkuInfoData,
+	SkuData,
+} from "@/api/product/spu/type";
 import SpuForm from "./SpuForm.vue";
 import SkuFrom from "./SkuFrom.vue";
 
@@ -14,6 +20,9 @@ let pageNo = ref<number>(1);
 let limit = ref<number>(3);
 let show = ref<number>(0); //0基础表单，1spu，2sku
 let spu = ref<any>();
+let sku = ref<any>();
+let skuArr = ref<SkuData[]>([]);
+let visible = ref<boolean>(false)
 
 const getSpuArr = async (pager = 1) => {
   const result: SpuResponseData = await reqHasSpu(
@@ -44,14 +53,14 @@ const pageChange = () => {
 };
 
 const addSpu = () => {
-	show.value = 1;
+  show.value = 1;
 
-	spu.value.initAddSpu(categoryStore.c3Id);
+  spu.value.initAddSpu(categoryStore.c3Id);
 };
 
-const Cancel = (param) => {
-	show.value = param;
-	getSpuArr();
+const Cancel = (param: number) => {
+  show.value = param;
+  getSpuArr();
 };
 
 const updateSpu = (row: SpuData) => {
@@ -60,9 +69,26 @@ const updateSpu = (row: SpuData) => {
 };
 
 const deleteSpu = async (row: SpuData) => {
-	const result = await reqRemoveSpu(row.id as number)
-	//检验
-}
+  const result = await reqRemoveSpu(row.id as number);
+  //检验
+};
+//添加SKU按钮的回调
+const addSku = (row: SpuData) => {
+  //点击添加SKU按钮切换场景为2
+  show.value = 2;
+  //调用子组件的方法初始化添加SKU的数据
+  sku.value.initSkuData(categoryStore.c1Id, categoryStore.c2Id, row);
+};
+
+//查看SKU列表的数据
+const findSku = async (row: SpuData) => {
+  let result: SkuInfoData = await reqSkuList(row.id as number);
+  if (result.code == 200) {
+    skuArr.value = result.data;
+    //对话框显示出来
+    visible.value = true;
+  }
+};
 </script>
 
 <template>
@@ -94,6 +120,7 @@ const deleteSpu = async (row: SpuData) => {
                 icon="Plus"
                 size="small"
                 title="增加属性"
+                @click="addSku(row)"
               ></el-button>
               <el-button
                 type="warning"
@@ -107,13 +134,14 @@ const deleteSpu = async (row: SpuData) => {
                 icon="View"
                 size="small"
                 title="查看SKU详情"
+                @click="findSku(row)"
               ></el-button>
               <el-button
                 type="danger"
                 icon="Delete"
                 size="small"
                 title="删除SPU"
-								@click="deleteSpu(row)"
+                @click="deleteSpu(row)"
               ></el-button>
             </template>
           </el-table-column>
@@ -130,7 +158,19 @@ const deleteSpu = async (row: SpuData) => {
       </el-card>
     </div>
     <SpuForm ref="spu" v-show="show == 1" @whileCancel="Cancel" />
-    <SkuFrom v-show="show == 2" />
+    <SkuFrom ref="sku" v-show="show == 2" @whileCancel="Cancel" />
+    <el-dialog v-model="visible" title="SKU列表">
+      <el-table border :data="skuArr">
+        <el-table-column label="SKU名字" prop="skuName"></el-table-column>
+        <el-table-column label="SKU价格" prop="price"></el-table-column>
+        <el-table-column label="SKU重量" prop="weight"></el-table-column>
+        <el-table-column label="SKU图片">
+          <template #="{ row, $index }">
+            <img :src="row.skuDefaultImg" style="width: 100px; height: 100px" />
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 

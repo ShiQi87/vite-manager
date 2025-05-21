@@ -134,7 +134,7 @@ const deleteAttrValue = ($index: number) => {
 
 const deleteAttr = async (attrId: number) => {
   const result = await reqDeleteAttr(attrId);
-  if ((result.code == 200)) {
+  if (result.code == 200) {
     ElMessage({
       type: "success",
       message: "删除成功",
@@ -150,7 +150,7 @@ const deleteAttr = async (attrId: number) => {
 
 onBeforeUnmount(() => {
   categoryStore.$reset();
-})
+});
 </script>
 
 <template>
