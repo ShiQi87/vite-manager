@@ -69,7 +69,7 @@ const updateBrand = (row: BrandData) => {
 
 const deleteBrand = async (id: number) => {
   let result: ResponseData = await reqDelete(id);
-  if (result.code == 200) {
+  if (result.code == 201) {
     ElMessage({
       type: "success",
       message: "商品删除成功",
@@ -96,7 +96,7 @@ const confirm = async () => {
   await formRef.value.validate();
   try {
     let result: ResponseData = await reqAddOrUpdateBrand(newBrandInfo);
-    if (result.code == 200) {
+    if (result.code == 201) {
       dialogFormVisible.value = false;
       ElMessage({
         type: "success",
@@ -238,7 +238,7 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (response) => {
         <el-form-item label="上传LOGO" label-width="100px" prop="logoUrl">
           <el-upload
             class="avatar-uploader"
-            action="/api/admin/product/fileUpload"
+            action="/api/admin/product/spuImage/fileUpload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"

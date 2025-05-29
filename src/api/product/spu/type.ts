@@ -73,7 +73,7 @@ export type SpuSaleAttrValue = {
   updateTime?: null;
   spuId?: number;
   baseSaleAttrId: number | string;
-  saleAttrValueName: string;
+  saleAttrValueName?: string;
   saleAttrName?: string;
   isChecked?: null;
 };
@@ -86,7 +86,7 @@ export interface SaleAttrResponseData extends ResponseData {
 
 export type HasSaleAttr = {
   id: number;
-  name: string;
+  attrName: string;
 };
 
 export interface HasSaleAttrResponse extends ResponseData {

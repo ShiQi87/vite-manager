@@ -117,7 +117,7 @@
               style="margin: 5px"
               v-for="item in skuInfo.skuSaleAttrValueList"
               :key="item.id"
-              >{{ item.saleAttrValueName }}</el-tag
+              >{{ item.valueName }}</el-tag
             >
           </el-col>
         </el-row>
@@ -220,7 +220,7 @@ const removeSku = async (id: number) => {
   let result: any = await reqRemoveSku(id);
   if (result.code == 200) {
     ElMessage({ type: "success", message: "删除成功" });
-    getHasSku(skuArr.value.length > 1 ? pageNo.value : pageNo.value - 1);
+    getHasSku(pageNo.value > 1 ? pageNo.value -1 : pageNo.value);
   } else {
     //删除失败
     ElMessage({ type: "error", message: "系统数据不能删除" });

@@ -71,6 +71,7 @@ const updateSpu = (row: SpuData) => {
 const deleteSpu = async (row: SpuData) => {
   const result = await reqRemoveSpu(row.id as number);
   //检验
+  getSpuArr()
 };
 //添加SKU按钮的回调
 const addSku = (row: SpuData) => {

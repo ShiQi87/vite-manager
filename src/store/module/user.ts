@@ -20,6 +20,20 @@ const getAsyncRoute = (asyncRoute: Array<RouteRecordRaw>, routes: any) => {
   });
 };
 
+// 简单深拷贝异步路由：只拷贝必要字段，不丢失 component
+const deepCloneRoutes = (routes: RouteRecordRaw[]): RouteRecordRaw[] => {
+  return routes.map((route) => {
+    const newRoute: RouteRecordRaw = {
+      ...route,
+      meta: { ...(route.meta || {}) },
+    };
+    if (route.children && route.children.length > 0) {
+      newRoute.children = deepCloneRoutes(route.children); // 递归处理 children
+    }
+    return newRoute;
+  });
+};
+
 let useUserStore = defineStore("User", {
   state(): UserState {
     return {
@@ -36,10 +50,9 @@ let useUserStore = defineStore("User", {
       //成功返回200和token
       //失败返回201，给出失败信息
       if (result.code === 200) {
-        // this.token = result.data;
-        this.token = "Admin Token";
+        this.token = result.data;
         localStorage.setItem("TOKEN", this.token);
-        this.userInfo();
+        await this.userInfo();
       } else {
         return Promise.reject(new Error(result.message));
       }
@@ -47,12 +60,12 @@ let useUserStore = defineStore("User", {
     async userInfo() {
       let result: UserInfo = await reqUserInfo();
       if (result.code == 200) {
-        this.username = result.data.name;
+        this.username = result.data.username;
         this.avatar = result.data.avatar;
         this.buttons = result.data.buttons;
         // 用序列化反序列化获取副本
         const userAsyncRoute = getAsyncRoute(
-          JSON.parse(JSON.stringify(asyncRoute)),
+          deepCloneRoutes(asyncRoute),
           result.data.routes
         );
         this.menuRoutes = [...constantRoute, ...userAsyncRoute, ...anyRoute];

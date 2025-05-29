@@ -32,7 +32,7 @@ export interface RoleData {
   id?: number
   createTime?: string
   updateTime?: string
-  roleName: string
+  name: string
   remark: null
 }
 //全部职位的列表

@@ -47,13 +47,13 @@
       <el-table-column
         label="创建时间"
         align="center"
-        prop="createTime"
+        prop="createdAt"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         label="更新时间"
         align="center"
-        prop="updateTime"
+        prop="updatedAt"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column label="操作" align="center" width="300px">
@@ -127,7 +127,7 @@
     <template #footer>
       <div style="flex: auto">
         <el-button @click="cancel"> 取消 </el-button>
-        <el-button type="primary" @click="save"></el-button>
+        <el-button type="primary" @click="save"> 保存 </el-button>
       </div>
     </template>
   </el-drawer>
@@ -158,7 +158,7 @@
             :key="index"
             :label="role"
           >
-            {{ role.roleName }}
+            {{ role.name }}
           </el-checkbox>
         </el-checkbox-group></el-form
       >
@@ -306,7 +306,7 @@ const cancel = () => {
 const save = async () => {
   await formRef.value.validate();
   let result: any = await reqAddOrUpdateUser(userParams);
-  if (result.code == 200) {
+  if (result.code == 201) {
     cancel();
     ElMessage({
       type: "success",
@@ -363,7 +363,7 @@ const setConfirm = async () => {
   };
 
   const result = await reqSetUserRole(data);
-  if (result.code == 200) {
+  if (result.code == 201) {
     //提示信息
     ElMessage({ type: "success", message: "分配职务成功" });
     //关闭抽屉

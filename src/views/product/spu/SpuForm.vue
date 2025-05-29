@@ -71,15 +71,15 @@ let spuParams = ref<SpuData>({
   spuSaleAttrList: [],
 });
 
-const initHasSpuData = async (seletedSpu: SpuData) => {
+const initHasSpuData = async (selectedSpu: SpuData) => {
   try {
-    spuParams.value = seletedSpu;
+    spuParams.value = selectedSpu;
 
     const [result1, result2, result3, result4] = await Promise.all([
       reqAllBrand(),
       reqAllSaleAttr(),
-      reqSpuImageList(seletedSpu.id as number),
-      reqSpuSaleAttrList(seletedSpu.id as number),
+      reqSpuImageList(selectedSpu.id as number),
+      reqSpuSaleAttrList(selectedSpu.id as number),
     ]);
 
     brand.value = result1.data;
@@ -100,7 +100,7 @@ let unSelectSaleAttr = computed(() => {
   let unSelectArr = saleAttr.value.filter(
     (item) =>
       // some和every的区别是some有一个满足就返回true，没有才是false，every有一个不满足就返回false，全满足才返回true
-      saleAttrList.value.every((item1) => item.name != item1.saleAttrName) // 有一个相同就返回false，说明有了
+      saleAttrList.value.every((item1) => item.attrName != item1.saleAttrName) // 有一个相同就返回false，说明有了
   );
   return unSelectArr;
 });
@@ -123,13 +123,15 @@ const addSaleAttr = () => {
 
 const toLook = (row: SaleAttr) => {
   row.flag = false;
-  row.saleAttrValue = "";
 
   const { baseSaleAttrId, saleAttrValue } = row;
+
   row.spuSaleAttrValueList.push({
     baseSaleAttrId,
     saleAttrValueName: saleAttrValue,
   });
+
+  row.saleAttrValue = "";
 };
 
 const toEdit = (row: SaleAttr) => {
@@ -222,7 +224,7 @@ defineExpose({ initHasSpuData, initAddSpu });
             -->
           <el-upload
             v-model:file-list="spuImageList"
-            action="/api/admin/product/fileUpload"
+            action="/api/admin/product/spuImage/fileUpload"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
@@ -254,8 +256,8 @@ defineExpose({ initHasSpuData, initAddSpu });
             <el-option
               v-for="(item, index) in unSelectSaleAttr"
               :key="item.id"
-              :value="`${item.id}:${item.name}`"
-              :label="item.name"
+              :value="`${item.id}:${item.attrName}`"
+              :label="item.attrName"
             ></el-option
           ></el-select>
           <el-button
@@ -288,7 +290,7 @@ defineExpose({ initHasSpuData, initAddSpu });
                   class="mx-1"
                   closable
                 >
-                  {{ item.saleAttrValueName }}
+                  {{ item.valueName }}
                 </el-tag>
                 <el-input
                   @blur="toLook(row)"
@@ -313,7 +315,7 @@ defineExpose({ initHasSpuData, initAddSpu });
                   type="danger"
                   icon="Delete"
                   size="small"
-                  @ckick="saleAttrList.splice($index, 1)"
+                  @click="saleAttrList.splice($index, 1)"
                 ></el-button>
               </template>
             </el-table-column>

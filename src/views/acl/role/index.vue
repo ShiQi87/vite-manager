@@ -33,20 +33,20 @@
       <el-table-column
         label="职位名称"
         align="center"
-        prop="roleName"
+        prop="name"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
-        label="创建世间"
+        label="创建时间"
         align="center"
         show-overflow-tooltip
-        prop="createTime"
+        prop="createdAt"
       ></el-table-column>
       <el-table-column
         label="更新时间"
         align="center"
         show-overflow-tooltip
-        prop="updateTime"
+        prop="updatedAt"
       ></el-table-column>
       <el-table-column label="操作" width="280px" align="center">
         <!-- row:已有的职位对象 -->
@@ -66,7 +66,7 @@
             >编辑</el-button
           >
           <el-popconfirm
-            :title="`你确定要删除${row.roleName}?`"
+            :title="`你确定要删除${row.name}?`"
             width="260px"
             @confirm="removeRole(row.id)"
           >
@@ -96,10 +96,10 @@
     :title="RoleParams.id ? '更新职位' : '添加职位'"
   >
     <el-form :model="RoleParams" :rules="rules" ref="form">
-      <el-form-item label="职位名称" prop="roleName">
+      <el-form-item label="职位名称" prop="name">
         <el-input
           placeholder="请你输入职位名称"
-          v-model="RoleParams.roleName"
+          v-model="RoleParams.name"
         ></el-input>
       </el-form-item>
     </el-form>
@@ -175,9 +175,9 @@ let form = ref<any>();
 let drawer = ref<boolean>(false);
 //收集新增岗位数据
 let RoleParams = reactive<RoleData>({
-  roleName: "",
+  name: "",
 });
-//准备一个数组:数组用于存储勾选的节点的ID(四级的)
+//准备一个数组:数组用于存储勾选的节点的ID(三级的)
 let selectArr = ref<number[]>([]);
 //定义数组存储用户权限的数据
 let menuArr = ref<MenuList>([]);
@@ -219,7 +219,7 @@ const reset = () => {
 //添加职位回调
 const addandUpdateRole = (
   row: RoleData = {
-    roleName: "",
+    name: "",
     id: 0,
   }
 ) => {
@@ -233,7 +233,7 @@ const addandUpdateRole = (
   });
 };
 //自定义校验规则的回调
-const validatorRoleName = (rule: any, value: any, callBack: any) => {
+const validatorname = (rule: any, value: any, callBack: any) => {
   if (value.trim().length >= 2) {
     callBack();
   } else {
@@ -242,7 +242,7 @@ const validatorRoleName = (rule: any, value: any, callBack: any) => {
 };
 //职位校验规则
 const rules = {
-  roleName: [{ required: true, trigger: "blur", validator: validatorRoleName }],
+  name: [{ required: true, trigger: "blur", validator: validatorname }],
 };
 
 //确定按钮的回调
@@ -251,7 +251,7 @@ const save = async () => {
   await form.value.validate();
   //添加职位|更新职位的请求
   let result: any = await reqAddOrUpdateRole(RoleParams);
-  if (result.code == 200) {
+  if (result.code == 201) {
     //提示文字
     ElMessage({
       type: "success",
@@ -271,7 +271,7 @@ const setPermission = async (row: RoleData) => {
   Object.assign(RoleParams, row);
   //根据职位获取权限的数据
   let result: MenuResponseData = await reqAllMenuList(RoleParams.id as number);
-  if (result.code == 200) {
+  if (result.code == 201) {
     menuArr.value = result.data;
     selectArr.value = filterSelectArr(menuArr.value, []);
   }
@@ -285,7 +285,7 @@ const defaultProps = {
 
 const filterSelectArr = (allData: any, initArr: any) => {
   allData.forEach((item: any) => {
-    if (item.select && item.level == 4) {
+    if (item.select && item.level == 3) {
       initArr.push(item.id);
     }
     if (item.children && item.children.length > 0) {
@@ -307,7 +307,7 @@ const handler = async () => {
   let permissionId = arr.concat(arr1);
   //下发权限
   let result: any = await reqSetPermission(roleId, permissionId);
-  if (result.code == 200) {
+  if (result.code == 201) {
     drawer.value = false;
     //提示信息
     ElMessage({ type: "success", message: "分配权限成功" });

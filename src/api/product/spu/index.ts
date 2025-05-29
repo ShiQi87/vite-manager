@@ -43,17 +43,17 @@ export const reqAllSaleAttr = () =>
   request.get<any, HasSaleAttrResponse>(API.ALLSALEATTR_URL);
 //追加新的spu
 export const reqAddOrUpdateSpu = (spuInfo: SpuData) =>
-  spuInfo.id
-    ? request.post<any, any>(API.UPDATESPU_URL, spuInfo)
-    : request.post<any, any>(API.ADDSPU_URL, spuInfo);
+  //   spuInfo.id
+  //     ? request.post<any, any>(API.UPDATESPU_URL, spuInfo) :
+  request.post<any, any>(API.ADDSPU_URL, spuInfo);
 //删除已有的SPU
 export const reqRemoveSpu = (spuId: number | string) =>
-	request.delete<any, any>(API.REMOVESPU_URL + spuId);
+  request.delete<any, any>(API.REMOVESPU_URL + spuId);
 
 //添加SKU的请求方法
 export const reqAddSku = (data: SkuData) =>
-  request.post<any, any>(API.ADDSKU_URL, data)
+  request.post<any, any>(API.ADDSKU_URL, data);
 
 //获取SKU数据
 export const reqSkuList = (spuId: number | string) =>
-  request.get<any, SkuInfoData>(API.SKUINFO_URL + spuId)
+  request.get<any, SkuInfoData>(API.SKUINFO_URL + spuId);

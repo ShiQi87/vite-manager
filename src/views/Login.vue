@@ -50,7 +50,7 @@ import useUserStore from "@/store/module/user";
 import { useRouter, useRoute } from "vue-router";
 import { getNowTime } from "@/utils/gettime";
 //收集账号和密码
-let logInfo = reactive({ username: "admin", password: "111111" });
+let logInfo = reactive({ username: "System", password: "111111" });
 let loading = ref(false);
 let logInfoRef = ref();
 
