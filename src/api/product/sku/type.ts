@@ -8,14 +8,21 @@ export interface Attr {
   id?: number;
   attrId: number | string;
   valueId: number | string;
+  attrName?: string;
+  valueName?: string;
+  attrIdAndValueId?: string;  // 添加这个属性用于表单绑定
 }
-export interface saleArr {
+export interface SaleAttr {
   id?: number;
   saleAttrId: number | string;
   saleAttrValueId: number | string;
+  saleAttrName?: string;
+  saleAttrValueName?: string;
 }
 export interface SkuData {
   category3Id?: string | number;
+  category1Id?: string | number;
+  category2Id?: string | number;
   spuId?: string | number;
   tmId?: string | number;
   skuName?: string;
@@ -23,7 +30,7 @@ export interface SkuData {
   weight?: string | number;
   skuDesc?: string;
   skuAttrValueList?: Attr[];
-  skuSaleAttrValueList?: saleArr[];
+  skuSaleAttrValueList?: SaleAttr[];
   skuDefaultImg?: string;
   isSale?: number;
   id?: number;

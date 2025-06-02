@@ -8,7 +8,7 @@ import {
   SpuResponseData,
   SpuData,
   SkuInfoData,
-	SkuData,
+  SkuData,
 } from "@/api/product/spu/type";
 import SpuForm from "./SpuForm.vue";
 import SkuFrom from "./SkuFrom.vue";
@@ -22,7 +22,7 @@ let show = ref<number>(0); //0基础表单，1spu，2sku
 let spu = ref<any>();
 let sku = ref<any>();
 let skuArr = ref<SkuData[]>([]);
-let visible = ref<boolean>(false)
+let visible = ref<boolean>(false);
 
 const getSpuArr = async (pager = 1) => {
   const result: SpuResponseData = await reqHasSpu(
@@ -71,7 +71,7 @@ const updateSpu = (row: SpuData) => {
 const deleteSpu = async (row: SpuData) => {
   const result = await reqRemoveSpu(row.id as number);
   //检验
-  getSpuArr()
+  getSpuArr();
 };
 //添加SKU按钮的回调
 const addSku = (row: SpuData) => {

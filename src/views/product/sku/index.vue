@@ -50,7 +50,7 @@
             type="primary"
             size="small"
             icon="Edit"
-            @click="updateSku"
+            @click="updateSku(row)"
           ></el-button>
           <el-button
             type="primary"
@@ -140,11 +140,21 @@
         </el-row>
       </template>
     </el-drawer>
+
+    <!-- 添加 SKU 更新的对话框 -->
+    <el-dialog
+      v-model="dialogVisible"
+      title="更新SKU"
+      width="80%"
+      :before-close="handleClose"
+    >
+      <SkuForm ref="skuForm" @whileCancel="handleCancel" />
+    </el-dialog>
   </el-card>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 //引入请求
 import {
   reqSkuList,
@@ -160,6 +170,9 @@ import type {
   SkuInfoData,
 } from "@/api/product/sku/type";
 import { ElMessage } from "element-plus";
+//引入sku表单组件
+import SkuForm from '@/views/product/spu/SkuFrom.vue';
+
 //分页器当前页码
 let pageNo = ref<number>(1);
 //每一页展示几条数据
@@ -169,6 +182,11 @@ let skuArr = ref<SkuData[]>([]);
 //控制抽屉显示与隐藏的字段
 let drawer = ref<boolean>(false);
 let skuInfo = ref<any>({});
+//控制对话框的显示与隐藏
+let dialogVisible = ref<boolean>(false);
+//sku表单组件实例
+let skuForm = ref();
+
 //组件挂载完毕
 onMounted(() => {
   getHasSku();
@@ -204,8 +222,26 @@ const updateSale = async (row: SkuData) => {
   }
 };
 //更新已有的SKU
-const updateSku = () => {
-  ElMessage({ type: "success", message: "程序员在努力的更新中...." });
+const updateSku = async (row: SkuData) => {
+  dialogVisible.value = true;
+  //等待下一次DOM更新完成
+  await nextTick();
+  //获取SKU详情
+  const result = await reqSkuInfo(row.id as number);
+  if (result.code === 200) {
+    const skuData: SkuData = result.data;
+    //初始化表单数据
+    skuForm.value.initSkuData(
+      skuData.category1Id,
+      skuData.category2Id,
+      {
+        category3Id: skuData.category3Id,
+        id: skuData.spuId,
+        tmId: skuData.tmId
+      },
+      skuData.id
+    );
+  }
 };
 //查看商品详情按钮的回调
 const findSku = async (row: SkuData) => {
@@ -224,6 +260,20 @@ const removeSku = async (id: number) => {
   } else {
     //删除失败
     ElMessage({ type: "error", message: "系统数据不能删除" });
+  }
+};
+
+//处理对话框关闭
+const handleClose = (done: () => void) => {
+  done();
+};
+
+//处理取消操作
+const handleCancel = (type: number) => {
+  dialogVisible.value = false;
+  //重新获取列表数据
+  if (type === 0) {
+    getHasSku(pageNo.value);
   }
 };
 </script>

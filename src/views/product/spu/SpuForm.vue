@@ -128,7 +128,7 @@ const toLook = (row: SaleAttr) => {
 
   row.spuSaleAttrValueList.push({
     baseSaleAttrId,
-    saleAttrValueName: saleAttrValue,
+    valueName: saleAttrValue,
   });
 
   row.saleAttrValue = "";

@@ -50,7 +50,7 @@ let useUserStore = defineStore("User", {
       //成功返回200和token
       //失败返回201，给出失败信息
       if (result.code === 200) {
-        this.token = result.data;
+        this.token = result.data.token;
         localStorage.setItem("TOKEN", this.token);
         await this.userInfo();
       } else {

@@ -1,9 +1,9 @@
-import { UserConfigExport, ConfigEnv, loadEnv } from 'vite';
-import { viteMockServe } from 'vite-plugin-mock';
-import vue from '@vitejs/plugin-vue';
-import path from 'path';
+import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
+import { viteMockServe } from "vite-plugin-mock";
+import vue from "@vitejs/plugin-vue";
+import path from "path";
 //引入svg
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 // https://vitejs.dev/config/
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
@@ -12,16 +12,16 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     plugins: [
       vue(),
       createSvgIconsPlugin({
-      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-      symbolId: 'icon-[dir]-[name]',
+        iconDirs: [path.resolve(process.cwd(), "src/assets/icons")],
+        symbolId: "icon-[dir]-[name]",
       }),
       viteMockServe({
-        enable: command === 'serve',
+        enable: command === "serve",
       }),
     ],
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, './src')//给src配置别名。@
+        "@": path.resolve(__dirname, "./src"), //给src配置别名。@
       },
     },
     //sass全局变量配置
@@ -29,7 +29,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       preprocessorOptions: {
         scss: {
           javascriptEnabled: true,
-            additionalData: '@import "./src/style/global.scss";',
+          additionalData: '@import "./src/style/global.scss";',
         },
       },
     },
@@ -39,9 +39,14 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         [env.VITE_APP_BASE_API]: {
           target: env.VITE_SERVE,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/,'')//配置代理只有api开头才代理，默认api开头，转发时也会带api，但是真实地址没有api，所以重写
-        }
-      }
-    }
-  }
-}
+          rewrite: (path) => path.replace(/^\/api/, ""), //配置代理只有api开头才代理，默认api开头，转发时也会带api，但是真实地址没有api，所以重写
+        },
+        // 添加图片代理
+        "^/images/.*": {
+          target: env.VITE_SERVE,
+          changeOrigin: true,
+        },
+      },
+    },
+  };
+};

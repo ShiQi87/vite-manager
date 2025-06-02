@@ -2,7 +2,7 @@
     <el-table :data="PermissionArr" style="width: 100%; margin-bottom: 20px" row-key="id" border>
         <el-table-column label="名称" prop="name"></el-table-column>
         <el-table-column label="权限值" prop="code"></el-table-column>
-        <el-table-column label="修改时间" prop="updateTime"></el-table-column>
+        <el-table-column label="修改时间" prop="updatedAt"></el-table-column>
         <el-table-column label="操作">
             <template #="{ row, $index }">
                 <el-button type="primary" @click="addPermission(row)" size="small"

@@ -36,7 +36,7 @@ request.interceptors.response.use(
         msg = '请求地址错误';
         break;
       case 500:
-        msg = '服务器出现问题';
+        msg = error.response.data.message;
         break;
       default:
         msg = '网络出现问题';

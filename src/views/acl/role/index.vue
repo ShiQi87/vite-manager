@@ -271,7 +271,7 @@ const setPermission = async (row: RoleData) => {
   Object.assign(RoleParams, row);
   //根据职位获取权限的数据
   let result: MenuResponseData = await reqAllMenuList(RoleParams.id as number);
-  if (result.code == 201) {
+  if (result.code == 200) {
     menuArr.value = result.data;
     selectArr.value = filterSelectArr(menuArr.value, []);
   }

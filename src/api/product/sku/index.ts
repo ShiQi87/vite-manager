@@ -13,6 +13,7 @@ enum API {
   SKUINFO_URL = "/admin/product/getSkuInfo/",
   //删除已有的商品
   DELETESKU_URL = "/admin/product/deleteSku/",
+  ADDSKU_URL = "/admin/product/saveSkuInfo",
 }
 //获取商品SKU的接口
 export const reqSkuList = (page: number, limit: number) =>
@@ -29,3 +30,6 @@ export const reqSkuInfo = (skuId: number) =>
 //删除某一个已有的商品
 export const reqRemoveSku = (skuId: number) =>
   request.delete<any, any>(API.DELETESKU_URL + skuId);
+//更新SKU的请求
+export const reqUpdateSku = (data: any) =>
+  request.post<any, any>(API.ADDSKU_URL, data);

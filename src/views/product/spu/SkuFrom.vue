@@ -35,8 +35,9 @@
               v-for="(item, index) in attrArr"
               :key="item.id"
               :label="item.attrName"
+              style="margin-right: 10px; min-width: 300px;"
             >
-              <el-select v-model="item.attrIdAndValueId">
+              <el-select v-model="item.attrIdAndValueId" style="width: 100%">
                 <el-option
                   :value="`${item.id}:${attrValue.id}`"
                   v-for="(attrValue, index) in item.attrValueList"
@@ -53,8 +54,9 @@
               :label="item.saleAttrName"
               v-for="(item, index) in saleArr"
               :key="item.id"
+              style="margin-right: 10px; min-width: 300px;"
             >
-              <el-select v-model="item.saleIdAndValueId">
+              <el-select v-model="item.saleIdAndValueId" placeholder="请选择" style="width: 100%">
                 <el-option
                   :value="`${item.saleAttrId}:${saleAttrValue.id}`"
                   v-for="(saleAttrValue, index) in item.spuSaleAttrValueList"
@@ -112,6 +114,7 @@ import {
   reqSpuSaleAttrList,
   reqAddSku,
 } from "@/api/product/spu";
+import { reqUpdateSku, reqSkuInfo } from "@/api/product/sku";
 import type { SkuData } from "@/api/product/spu/type";
 import { ElMessage } from "element-plus";
 import { ref, reactive } from "vue";
@@ -147,12 +150,23 @@ let skuParams = reactive<SkuData>({
 const initSkuData = async (
   c1Id: number | string,
   c2Id: number | string,
-  spu: any
+  spu: any,
+  skuId?: number
 ) => {
   //收集数据
   skuParams.category3Id = spu.category3Id;
   skuParams.spuId = spu.id;
   skuParams.tmId = spu.tmId;
+
+  // 如果有 skuId，说明是编辑模式
+  if (skuId) {
+    const result = await reqSkuInfo(skuId);
+    if (result.code === 200) {
+      // 填充表单数据
+      Object.assign(skuParams, result.data);
+    }
+  }
+
   //获取平台属性
   let result: any = await reqAttr(c1Id, c2Id, spu.category3Id);
   //获取对应的销售属性
@@ -165,6 +179,39 @@ const initSkuData = async (
   saleArr.value = result1.data;
   //图片
   imgArr.value = result2.data;
+
+  // 如果是编辑模式，设置选中的值
+  if (skuId) {
+    // 设置平台属性的选中值
+    attrArr.value.forEach((attr: any) => {
+      const matchedAttr = skuParams.skuAttrValueList?.find(
+        (item) => item.attrId == attr.id
+      );
+      if (matchedAttr) {
+        attr.attrIdAndValueId = `${matchedAttr.attrId}:${matchedAttr.id}`;
+      }
+    });
+
+    // 设置销售属性的选中值
+    saleArr.value.forEach((sale: any) => {
+      const matchedSale = skuParams.skuSaleAttrValueList?.find(
+        (item) => item.saleAttrId == sale.saleAttrId
+      );
+      if (matchedSale) {
+        sale.saleIdAndValueId = `${matchedSale.saleAttrId}:${matchedSale.id}`;
+      }
+    });
+
+    // 设置默认图片
+    if (skuParams.skuDefaultImg) {
+      const defaultImg = imgArr.value.find(
+        (img: any) => img.imgUrl === skuParams.skuDefaultImg
+      );
+      if (defaultImg) {
+        table.value.toggleRowSelection(defaultImg, true);
+      }
+    }
+  }
 };
 //取消按钮的回调
 const cancel = () => {
@@ -215,20 +262,30 @@ const save = async () => {
     },
     []
   );
-  //添加SKU的请求
-  let result: any = await reqAddSku(skuParams);
-  if (result.code == 200) {
-    //通知父组件切换场景为零
-    $emit("whileCancel", 0);
 
-    ElMessage({
-      type: "success",
-      message: "添加SKU成功",
-    });
-  } else {
+  try {
+    // 判断是新增还是更新
+    const api = skuParams.id ? reqUpdateSku : reqAddSku;
+    const result: any = await api(skuParams);
+    
+    if (result.code == 201) {
+      //通知父组件切换场景为零
+      $emit("whileCancel", 0);
+
+      ElMessage({
+        type: "success",
+        message: `${skuParams.id ? '更新' : '添加'}SKU成功`,
+      });
+    } else {
+      ElMessage({
+        type: "error",
+        message: `${skuParams.id ? '更新' : '添加'}SKU失败`,
+      });
+    }
+  } catch (error: any) {
     ElMessage({
       type: "error",
-      message: "添加SKU失败",
+      message: `操作失败：${error.message}`,
     });
   }
 };

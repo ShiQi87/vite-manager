@@ -73,7 +73,7 @@ export type SpuSaleAttrValue = {
   updateTime?: null;
   spuId?: number;
   baseSaleAttrId: number | string;
-  saleAttrValueName?: string;
+  valueName?: string;
   saleAttrName?: string;
   isChecked?: null;
 };
@@ -93,11 +93,22 @@ export interface HasSaleAttrResponse extends ResponseData {
   data: HasSaleAttr[];
 }
 
-export interface saleArr {
+export interface saleAttr {
   saleAttrId: number | string; //属性ID
-  saleAttrValueId: number | string; //属性值的ID
+  id: number | string; //属性值的ID
 }
+
+export interface Attr {
+  id?: number;
+  attrId: number | string;
+  valueId: number | string;
+  attrName?: string;
+  valueName?: string;
+  attrIdAndValueId?: string; // 添加这个属性用于表单绑定
+}
+
 export interface SkuData {
+  id?: number;
   category3Id: string | number; //三级分类的ID
   spuId: string | number; //已有的SPU的ID
   tmId: string | number; //SPU品牌的ID
@@ -106,10 +117,10 @@ export interface SkuData {
   weight: string | number; //sku重量
   skuDesc: string; //sku的描述
   skuAttrValueList?: Attr[];
-  skuSaleAttrValueList?: saleArr[];
+  skuSaleAttrValueList?: saleAttr[];
   skuDefaultImg: string; //sku图片地址
 }
 //获取SKU数据接口的ts类型
 export interface SkuInfoData extends ResponseData {
-  data: SkuData[]
+  data: SkuData[];
 }

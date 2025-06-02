@@ -9,7 +9,11 @@ export type ResponseData = {
   ok: boolean;
 }
 export interface LoginResponseData extends ResponseData{
-  data: string;
+  data: {
+	token: string,
+	username: string,
+	userId: string
+  };
 }
 
 export interface UserInfo  extends ResponseData {
