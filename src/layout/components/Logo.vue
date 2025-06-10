@@ -6,7 +6,7 @@ let topbarStore = useTopbarStore();
 
 <template>
   <div class="logo">
-    <img src="/logo.png" alt="Logo" />
+    <img src="/vite.svg" alt="Logo" />
     <p :hidden="topbarStore.fold">一个前端平台</p>
   </div>
 </template>
