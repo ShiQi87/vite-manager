@@ -41,13 +41,13 @@
       <el-table-column label="操作" width="250px" fixed="right">
         <template #="{ row, $index }">
           <el-button
-            type="primary"
+            type="success"
             size="small"
             :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
             @click="updateSale(row)"
           ></el-button>
           <el-button
-            type="primary"
+            type="warning"
             size="small"
             icon="Edit"
             @click="updateSku(row)"
@@ -64,7 +64,7 @@
             @confirm="removeSku(row.id)"
           >
             <template #reference>
-              <el-button type="primary" size="small" icon="Delete"></el-button>
+              <el-button type="danger" size="small" icon="Delete"></el-button>
             </template>
           </el-popconfirm>
         </template>
@@ -126,11 +126,9 @@
           <el-col :span="18">
             <el-carousel :interval="4000" type="card" height="200px">
               <el-carousel-item
-                v-for="item in skuInfo.skuImageList"
-                :key="item.id"
               >
                 <img
-                  :src="item.imgUrl"
+                  :src="skuInfo.skuDefaultImg"
                   alt=""
                   style="width: 100%; height: 100%"
                 />
